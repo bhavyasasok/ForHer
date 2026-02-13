@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Women Legal Support</title>
+</head>
+<body>
+
+<h2>Women Legal Support System</h2>
+
+<textarea id="problem" rows="5" cols="50" placeholder="Describe your issue..."></textarea>
+<br><br>
+<button onclick="analyze()">Analyze</button>
+
+<h3>Analysis:</h3>
+<pre id="analysis"></pre>
+
+<h3>Relevant Articles:</h3>
+<pre id="laws"></pre>
+
+<script>
+function analyze() {
+    const problem = document.getElementById("problem").value;
+
+    fetch("/analyze", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ problem: problem })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("analysis").innerText = data.analysis;
+        document.getElementById("laws").innerText = data.matched_laws.join("\n\n");
+    });
+}
+</script>
+
+</body>
+</html>
